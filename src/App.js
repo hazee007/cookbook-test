@@ -1,23 +1,33 @@
 import React from 'react';
-import logo from './logo.svg';
+import Particles from 'react-particles-js';
+
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+
 import './App.css';
+import MealDetails from './components/mealDetails';
+import SideBar from './components/sidebar';
 
-const recipes = [
-  {
-    author: "Jim",
-    name: "Chicken Curry",
-    description: "Delicious spicy chicken curry"
+const particleOptions = {
+  particles: {
+    number: {
+      value: 100,
+      density: {
+        enable: true,
+        value_area: 800,
+      },
+    },
   },
-  {
-    author: "Aravind",
-    name: "Hamburger",
-    description: "Juicy burger with toppings and a soft bun",
-  }
-]
-
+};
 function App() {
   return (
-    <div className="App">
+    <div className="app">
+      <Particles className="particles" params={particleOptions} />
+      <BrowserRouter>
+        <SideBar />
+        <Switch className="food">
+          <Route path="/:id" component={MealDetails} />
+        </Switch>
+      </BrowserRouter>
     </div>
   );
 }
