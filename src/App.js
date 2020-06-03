@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { firestore, getCollectionSnapshot } from './firebase/firebase.utils';
 import { getRecepies } from './redux/recepies/recepie.action';
 
-import MealDetails from './components/mealDetails';
+import MealDetails from './components/MealDetails';
 import SideBar from './components/sidebar';
 import './App.css';
 
@@ -41,7 +41,7 @@ function App({ getRecepies }) {
       <Particles className="particles" params={particleOptions} />
       <SideBar />
       <Switch className="food">
-        <Route path="/:id" component={MealDetails} />
+        <Route path="/recipe/:id" component={MealDetails} />
       </Switch>
     </div>
   );
