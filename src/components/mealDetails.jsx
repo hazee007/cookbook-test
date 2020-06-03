@@ -15,7 +15,6 @@ const MealDetails = () => {
   const recipeId = match.params.id;
   // Find this specific recipe from the redux store
   const recipe = useSelector((state) => getRecipeById(state, recipeId));
-  debugger;
 
   // Most likely, we're loading data
   if (!recipe) return null;
