@@ -9,7 +9,5 @@ export const selectRecepies = createSelector(
 
 export function getRecipeById(state, id) {
   // Javascript 2020 optional chaining*
-  const retVal = state?.recepies?.recepies?.find(recipe => recipe.id === id);
-  debugger;
-  return retVal
+  return state?.recepies?.recepies?.find(recipe => recipe.id === id);
 }
