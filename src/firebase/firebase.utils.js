@@ -28,6 +28,29 @@ export const addCollectionAndDocuments = async (collectionKey, objectToAdd) => {
   return await batch.commit();
 };
 
+// Check out async and await... we can write asynchronous code like sychronous code
+export async function getCollection(path) {
+  // this get() function is async. This code will pause here until we get the result
+  const snap = await firestore.collection(path).get();
+  return snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+}
+
+export function observeCollection(path, callback) {
+  /* The one line code at the end is equivalent to the commented code */
+
+  // return firestore.onSnapshot(snap => {
+  //   const docs = snap.docs.map(doc => {
+  //     const id = doc.id;
+  //     const data = doc.data();
+  //     return { id, ...data };
+  //   });
+  //   callback(docs);
+  // });
+
+  // This function returns an unsubscribe function, we need to unsubscribe the listener during cleanup
+  return firestore.collection(path).onSnapshot(snap => callback(snap.docs.map(doc => ({ id: doc.id, ...doc.data() }))));
+}
+
 // function to get Recepie from firestore
 export const getCollectionSnapshot = (collections) => {
   const getCollection = collections.docs.map((doc) => {

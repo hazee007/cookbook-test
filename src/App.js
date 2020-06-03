@@ -1,10 +1,10 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import Particles from 'react-particles-js';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
-import { firestore, getCollectionSnapshot } from './firebase/firebase.utils';
-import { getRecepies } from './redux/recepies/recepie.action';
+import { observeCollection } from './firebase/firebase.utils';
+import RecepieActionType from './redux/recepies/recepie.types';
 
 import MealDetails from './components/MealDetails';
 import SideBar from './components/sidebar';
@@ -21,20 +21,16 @@ const particleOptions = {
     },
   },
 };
-function App({ getRecepies }) {
-  //Upload Recepies to firestore only run once
-  // React.useEffect(() => {
-  //   addCollectionAndDocuments('Recepies', recipes);
-  // }, []);
+
+export default function App() {
+  const dispatch = useDispatch();
 
   // Get recipe from firestore
   React.useEffect(() => {
-    const collectionRef = firestore.collection('Recepies');
-    collectionRef.onSnapshot(async (snapshot) => {
-      const recipes = getCollectionSnapshot(snapshot);
-      getRecepies(recipes);
+    return observeCollection('Recepies', (recipes) => {
+      dispatch({ type: RecepieActionType.ADD_RECIPES_SUCCESS, recipes });
     });
-  }, [getRecepies]);
+  }, [dispatch]);
 
   return (
     <div className="app">
@@ -46,9 +42,3 @@ function App({ getRecepies }) {
     </div>
   );
 }
-
-const mapDispatchToProps = (dispatch) => ({
-  getRecepies: (recipes) => dispatch(getRecepies(recipes)),
-});
-
-export default connect(null, mapDispatchToProps)(App);
