@@ -1,8 +1,10 @@
 import React from 'react';
-import { recipes } from './recipes';
 import './styles.css';
+import { selectRecepies } from '../redux/recepies/recepie.selector';
+import { createStructuredSelector } from 'reselect';
+import { connect } from 'react-redux';
 
-const MealDetails = ({ match }) => {
+const MealDetails = ({ match, getrecipe }) => {
   let params;
   if (match !== undefined) {
     params = match.params.id;
@@ -10,33 +12,39 @@ const MealDetails = ({ match }) => {
   console.log(params);
   return (
     <div className="food">
-      {recipes.map((recipe) =>
-        recipe.Url === params ? (
-          <div key={recipe.id}>
-            {
-              <div className="detail-card">
-                <h2 className="title">{recipe.title}</h2>
-                <img src={recipe.imageUrl} alt="food" />
-                <p>Duration: {recipe.duration}m</p>
-                <h3 className="title">Ingredients</h3>
-                {recipe.ingredients.map((ingredients, index) => (
-                  <p className="listItem" key={index}>
-                    {ingredients}
-                  </p>
-                ))}
-                <h3 className="title">Steps</h3>
-                {recipe.steps.map((steps, index) => (
-                  <p className="listItem" key={index}>
-                    {steps}
-                  </p>
-                ))}
+      {getrecipe
+        ? getrecipe.map((recipe) =>
+            recipe.routeName === encodeURI(params.toLowerCase()) ? (
+              <div key={recipe.id}>
+                {
+                  <div className="detail-card">
+                    <h2 className="title">{recipe.title}</h2>
+                    <img src={recipe.imageUrl} alt="food" />
+                    <p>Duration: {recipe.duration}m</p>
+                    <h3 className="title">Ingredients</h3>
+                    {recipe.ingredients.map((ingredients, index) => (
+                      <p className="listItem" key={index}>
+                        {ingredients}
+                      </p>
+                    ))}
+                    <h3 className="title">Steps</h3>
+                    {recipe.steps.map((steps, index) => (
+                      <p className="listItem" key={index}>
+                        {steps}
+                      </p>
+                    ))}
+                  </div>
+                }
               </div>
-            }
-          </div>
-        ) : null
-      )}
+            ) : null
+          )
+        : null}
     </div>
   );
 };
 
-export default MealDetails;
+const mapStateToProps = createStructuredSelector({
+  getrecipe: selectRecepies,
+});
+
+export default connect(mapStateToProps)(MealDetails);

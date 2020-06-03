@@ -1,22 +1,35 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { recipes } from './recipes';
 import './styles.css';
+import { createStructuredSelector } from 'reselect';
+import { selectRecepies } from '../redux/recepies/recepie.selector';
+import { connect } from 'react-redux';
 
-const SideBar = () => (
-  <div className="side">
-    <h2 className="title">Meal's Menu</h2>
+const SideBar = ({ getrecipe }) => {
+  if (getrecipe) {
+  }
+  console.log(getrecipe);
+  return (
+    <div className="side">
+      <h2 className="title">Meal's Menu</h2>
 
-    <ul className="ul">
-      <div className="link">
-        {recipes.map((recipe, index) => (
-          <li key={index}>
-            <Link to={recipe.Url}>{recipe.title}</Link>
-          </li>
-        ))}
-      </div>
-    </ul>
-  </div>
-);
+      <ul className="ul">
+        <div className="link">
+          {getrecipe
+            ? getrecipe.map((recipe, index) => (
+                <li key={index}>
+                  <Link to={recipe.routeName}>{recipe.title}</Link>
+                </li>
+              ))
+            : null}
+        </div>
+      </ul>
+    </div>
+  );
+};
 
-export default SideBar;
+const mapStateToProps = createStructuredSelector({
+  getrecipe: selectRecepies,
+});
+
+export default connect(mapStateToProps)(SideBar);

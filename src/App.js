@@ -1,11 +1,14 @@
 import React from 'react';
+import { Switch, Route } from 'react-router-dom';
 import Particles from 'react-particles-js';
+import { connect } from 'react-redux';
 
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { firestore, getCollectionSnapshot } from './firebase/firebase.utils';
+import { getRecepies } from './redux/recepies/recepie.action';
 
-import './App.css';
 import MealDetails from './components/mealDetails';
 import SideBar from './components/sidebar';
+import './App.css';
 
 const particleOptions = {
   particles: {
@@ -18,18 +21,34 @@ const particleOptions = {
     },
   },
 };
-function App() {
+function App({ getRecepies }) {
+  //Upload Recepies to firestore only run once
+  // React.useEffect(() => {
+  //   addCollectionAndDocuments('Recepies', recipes);
+  // }, []);
+
+  // Get recipe from firestore
+  React.useEffect(() => {
+    const collectionRef = firestore.collection('Recepies');
+    collectionRef.onSnapshot(async (snapshot) => {
+      const recipes = getCollectionSnapshot(snapshot);
+      getRecepies(recipes);
+    });
+  }, [getRecepies]);
+
   return (
     <div className="app">
       <Particles className="particles" params={particleOptions} />
-      <BrowserRouter>
-        <SideBar />
-        <Switch className="food">
-          <Route path="/:id" component={MealDetails} />
-        </Switch>
-      </BrowserRouter>
+      <SideBar />
+      <Switch className="food">
+        <Route path="/:id" component={MealDetails} />
+      </Switch>
     </div>
   );
 }
 
-export default App;
+const mapDispatchToProps = (dispatch) => ({
+  getRecepies: (recipes) => dispatch(getRecepies(recipes)),
+});
+
+export default connect(null, mapDispatchToProps)(App);
