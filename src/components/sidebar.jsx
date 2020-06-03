@@ -18,7 +18,7 @@ const SideBar = ({ getrecipe }) => {
           {getrecipe
             ? getrecipe.map((recipe, index) => (
                 <li key={index}>
-                  <Link to={recipe.routeName}>{recipe.title}</Link>
+                  <Link to={`/recipe/${recipe.id}`}>{recipe.title}</Link>
                 </li>
               ))
             : null}
