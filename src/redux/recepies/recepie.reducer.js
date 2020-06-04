@@ -11,11 +11,17 @@ const recepiesReducer = (state = INITIAL_STATE, action) => {
         ...state,
         recepies: action.payload,
       };
+    case RecepieActionType.GET_RECIPES_SUCCESS: {
+      return {
+        ...state,
+        recepies: action.recipes,
+      };
+    }
     case RecepieActionType.ADD_RECIPES_SUCCESS: {
       return {
         ...state,
         recepies: action.recipes,
-      }
+      };
     }
     default:
       return state;

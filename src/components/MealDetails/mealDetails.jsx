@@ -1,12 +1,18 @@
 import React from 'react';
 import { connect, useSelector } from 'react-redux';
 import { useRouteMatch } from 'react-router-dom';
-import './styles.css';
 import {
   getRecipeById,
   selectRecepies,
-} from '../redux/recepies/recepie.selector';
+} from '../../redux/recepies/recepie.selector';
 import { createStructuredSelector } from 'reselect';
+import {
+  Container,
+  Title,
+  SubTitle,
+  ListItem,
+  Image,
+} from './mealDetails.styles';
 
 const MealDetails = () => {
   // React router has this nice hook now, we can get match in any file we ant
@@ -20,29 +26,25 @@ const MealDetails = () => {
   if (!recipe) return null;
 
   return (
-    <div className="food">
+    <Container>
       <div key={recipe.id}>
         {
-          <div className="detail-card">
-            <h2 className="title">{recipe.title}</h2>
-            <img src={recipe.imageUrl} alt="food" />
+          <div>
+            <Title>{recipe.title}</Title>
+            <Image src={recipe.imageUrl} alt="food" />
             <p>Duration: {recipe.duration}m</p>
-            <h3 className="title">Ingredients</h3>
+            <SubTitle>Ingredients</SubTitle>
             {recipe.ingredients.map((ingredients, index) => (
-              <p className="listItem" key={index}>
-                {ingredients}
-              </p>
+              <ListItem key={index}>{ingredients}</ListItem>
             ))}
             <h3 className="title">Steps</h3>
             {recipe.steps.map((steps, index) => (
-              <p className="listItem" key={index}>
-                {steps}
-              </p>
+              <ListItem key={index}>{steps}</ListItem>
             ))}
           </div>
         }
       </div>
-    </div>
+    </Container>
   );
 };
 

@@ -32,7 +32,7 @@ export const addCollectionAndDocuments = async (collectionKey, objectToAdd) => {
 export async function getCollection(path) {
   // this get() function is async. This code will pause here until we get the result
   const snap = await firestore.collection(path).get();
-  return snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  return snap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 }
 
 export function observeCollection(path, callback) {
@@ -48,7 +48,16 @@ export function observeCollection(path, callback) {
   // });
 
   // This function returns an unsubscribe function, we need to unsubscribe the listener during cleanup
-  return firestore.collection(path).onSnapshot(snap => callback(snap.docs.map(doc => ({ id: doc.id, ...doc.data() }))));
+  return firestore
+    .collection(path)
+    .onSnapshot((snap) =>
+      callback(snap.docs.map((doc) => ({ id: doc.id, ...doc.data() })))
+    );
+}
+
+// Add Recipe Collection
+export function addRecipeCollection(path, recipeDetails, callback) {
+  return firestore.collection(path).doc().set(recipeDetails);
 }
 
 // function to get Recepie from firestore
