@@ -27,11 +27,15 @@ const Form = () => {
     ingredients: [],
   });
 
+  debugger;
+
   const addSteps = () => {
+    debugger;
     setRecipeDetails({ steps: [...recipeDetails.steps, ''] });
   };
 
   const handleAddStep = (e) => {
+    debugger;
     const updatedSteps = [...recipeDetails.steps];
     updatedSteps[e.target.dataset.id] = e.target.value;
     setRecipeDetails({ steps: updatedSteps });
@@ -44,10 +48,12 @@ const Form = () => {
   };
 
   const addIng = () => {
+    debugger;
     setRecipeDetails({ ingredients: [...recipeDetails.ingredients, ''] });
   };
 
   const handleAddIng = (e) => {
+    debugger;
     const updatedIng = [...recipeDetails.ingredients];
     updatedIng[e.target.dataset.idx] = e.target.value;
     setRecipeDetails({ ingredients: updatedIng });
@@ -60,6 +66,7 @@ const Form = () => {
   };
 
   const handleChange = (event) => {
+    debugger;
     const { value, name } = event.target;
     setRecipeDetails({ ...recipeDetails, [name]: value });
   };
@@ -133,7 +140,7 @@ const Form = () => {
             </Container>
             <Container>
               <Label>Ingredients</Label>
-              {/* <Button type="button" value="Add Ingredients" onClick={addIng} />
+              <Button type="button" value="Add Ingredients" onClick={addIng} />
 
               {recipeDetails.ingredients.map((value, index) => (
                 <div key={index}>
@@ -147,11 +154,11 @@ const Form = () => {
 
                   <Button
                     type="button"
-                    value="Remove "
+                    value="Remove"
                     onClick={() => removeIng(index)}
                   />
                 </div>
-              ))} */}
+              ))}
             </Container>
           </FieldSet>
           <Button type="submit" value="Submit" />
