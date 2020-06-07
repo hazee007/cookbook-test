@@ -84,6 +84,8 @@ export const TextArea = styled.textarea`
 
 export const Button = styled.input`
   font-weight: bold;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
   padding-left: 1rem;
   padding-right: 1rem;
   padding-top: 0.5rem;

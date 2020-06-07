@@ -8,31 +8,68 @@ import {
   Container,
   Label,
   Input,
-  TextArea,
   Button,
   LinkContainer,
   ButtonLink,
 } from './formStyles';
-import { useDispatch } from 'react-redux';
-import { addRecipeCollection } from '../../firebase/firebase.utils';
-import RecepieActionType from '../../redux/recepies/recepie.types';
+// import { useDispatch } from 'react-redux';
+// import { addRecipeCollection } from '../../firebase/firebase.utils';
+// import RecepieActionType from '../../redux/recepies/recepie.types';
 
 const Form = () => {
-  const dispatch = useDispatch();
-  const [recipeDetails, setRecipeDetails] = useState('');
+  // const dispatch = useDispatch();
+  const [recipeDetails, setRecipeDetails] = useState({
+    title: '',
+    url: '',
+    author: '',
+    duration: '',
+    steps: [],
+    ingredients: [],
+  });
+
+  const addSteps = () => {
+    setRecipeDetails({ steps: [...recipeDetails.steps, ''] });
+  };
+
+  const handleAddStep = (e) => {
+    const updatedSteps = [...recipeDetails.steps];
+    updatedSteps[e.target.dataset.id] = e.target.value;
+    setRecipeDetails({ steps: updatedSteps });
+  };
+
+  const removeStep = (index) => {
+    let step = [...recipeDetails.steps];
+    step.splice(index, 1);
+    setRecipeDetails({ steps: step });
+  };
+
+  const addIng = () => {
+    setRecipeDetails({ ingredients: [...recipeDetails.ingredients, ''] });
+  };
+
+  const handleAddIng = (e) => {
+    const updatedIng = [...recipeDetails.ingredients];
+    updatedIng[e.target.dataset.idx] = e.target.value;
+    setRecipeDetails({ ingredients: updatedIng });
+  };
+
+  const removeIng = (index) => {
+    let ing = [...recipeDetails.ingredients];
+    ing.splice(index, 1);
+    setRecipeDetails({ ingredients: ing });
+  };
 
   const handleChange = (event) => {
     const { value, name } = event.target;
-
     setRecipeDetails({ ...recipeDetails, [name]: value });
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    addRecipeCollection('Recepies', recipeDetails, (addrecipe) => {
-      dispatch({ type: RecepieActionType.ADD_RECIPES_SUCCESS, addrecipe });
-    });
+    console.log(recipeDetails);
+    // addRecipeCollection('Recepies', recipeDetails, (addrecipe) => {
+    //   dispatch({ type: RecepieActionType.ADD_RECIPES_SUCCESS, addrecipe });
+    // });
   };
 
   return (
@@ -48,18 +85,11 @@ const Form = () => {
                 name="title"
                 id="title"
                 onChange={handleChange}
-                required
               />
             </Container>
             <Container>
               <Label>ImageUrl</Label>
-              <Input
-                type="text"
-                name="url"
-                id="url"
-                onChange={handleChange}
-                required
-              />
+              <Input type="text" name="url" id="url" onChange={handleChange} />
             </Container>
             <Container>
               <Label>Author</Label>
@@ -68,7 +98,6 @@ const Form = () => {
                 name="author"
                 id="author"
                 onChange={handleChange}
-                required
               />
             </Container>
             <Container>
@@ -78,28 +107,51 @@ const Form = () => {
                 name="duration"
                 id="duration"
                 onChange={handleChange}
-                required
               />
             </Container>
             <Container>
               <Label>Steps</Label>
-              <TextArea
-                type="text"
-                name="steps"
-                id="steps"
-                onChange={handleChange}
-                required
-              />
+              <Button type="button" value="Add Steps" onClick={addSteps} />
+
+              {recipeDetails.steps.map((val, index) => (
+                <div key={index}>
+                  <Input
+                    type="text"
+                    name="steps"
+                    // value={val}
+                    data-id={index}
+                    onChange={handleAddStep}
+                  />
+
+                  <Button
+                    type="button"
+                    value="Remove Steps"
+                    onClick={() => removeStep(index)}
+                  />
+                </div>
+              ))}
             </Container>
             <Container>
               <Label>Ingredients</Label>
-              <TextArea
-                type="text"
-                name="ingredients"
-                id="ingredients"
-                onChange={handleChange}
-                required
-              />
+              {/* <Button type="button" value="Add Ingredients" onClick={addIng} />
+
+              {recipeDetails.ingredients.map((value, index) => (
+                <div key={index}>
+                  <Input
+                    type="text"
+                    name="ingredients"
+                    // value={value}
+                    data-idx={index}
+                    onChange={handleAddIng}
+                  />
+
+                  <Button
+                    type="button"
+                    value="Remove "
+                    onClick={() => removeIng(index)}
+                  />
+                </div>
+              ))} */}
             </Container>
           </FieldSet>
           <Button type="submit" value="Submit" />
