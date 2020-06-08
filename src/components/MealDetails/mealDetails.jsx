@@ -37,7 +37,7 @@ const MealDetails = () => {
             {recipe.ingredients.map((ingredients, index) => (
               <ListItem key={index}>{ingredients}</ListItem>
             ))}
-            <h3 className="title">Steps</h3>
+            <SubTitle>Steps</SubTitle>
             {recipe.steps.map((steps, index) => (
               <ListItem key={index}>{steps}</ListItem>
             ))}
